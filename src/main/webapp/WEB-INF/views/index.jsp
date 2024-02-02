@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>hello spring framework</h2>
-    <a href="/board/save">글작성</a>
-    <a href="/board/paging">글목록</a>
+    <a href="/diary/save">글작성</a>
+    <a href="/diary/paging">글목록</a>
 </body>
 </html>

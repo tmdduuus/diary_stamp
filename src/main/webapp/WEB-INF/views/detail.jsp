@@ -63,15 +63,15 @@
 <script>
     const listFn = () => {
         const page = '${page}';
-        location.href = "/board/paging";
+        location.href = "/diary/paging";
     }
     const updateFn = () => {
         const id = '${board.id}';
-        location.href = "/board/update?id=" + id;
+        location.href = "/diary/update?id=" + id;
     }
     const deleteFn = () => {
         const id = '${board.id}';
-        location.href = "/board/delete?id=" + id;
+        location.href = "/diary/delete?id=" + id;
     }
 
     const commentWrite = () => {

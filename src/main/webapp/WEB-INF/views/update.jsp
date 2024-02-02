@@ -4,7 +4,7 @@
     <title>update.jsp</title>
 </head>
 <body>
-    <form action="/board/update" method="post" name="updateForm">
+    <form action="/diary/update" method="post" name="updateForm">
         <input type="hidden" name="id" value="${board.id}" readonly>
         <input type="text" name="boardWriter" value="${board.boardWriter}" readonly>
         <input type="text" name="boardPass" id="boardPass" placeholder="비밀번호">
