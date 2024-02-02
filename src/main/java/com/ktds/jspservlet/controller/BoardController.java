@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller // 이 클래스는 Spring의 컨트롤러로 지정
 @RequiredArgsConstructor // 생성자 주입을 자동으로 생성
-@RequestMapping("/board") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
+@RequestMapping("/diary") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
 public class BoardController {
     private final BoardService boardService; // BoardService 의존성 주입
     private final CommentService commentService;
@@ -27,7 +27,7 @@ public class BoardController {
     public String save(@ModelAttribute BoardDTO boardDTO) {
         int saveResult = boardService.save(boardDTO); // 게시글 저장 요청 처리
         if (saveResult > 0) {
-            return "redirect:/board/paging"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            return "redirect:/diary/paging"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "save"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }
@@ -56,7 +56,7 @@ public class BoardController {
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Long id){
         boardService.delete(id);
-        return "redirect:/board/paging";
+        return "redirect:/diary/paging";
     }
 
     @PostMapping("/update")
