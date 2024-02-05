@@ -5,6 +5,7 @@ import com.ktds.jspservlet.dto.DateDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +16,11 @@ import java.util.Map;
 public class BoardRepository {
     private final SqlSessionTemplate sql; // SqlSessionTemplate 의존성 주입
 
-    public int save(BoardDTO boardDTO) {
-        return sql.insert("Board.save", boardDTO); // 게시글 저장 쿼리 실행
+    public int save(BoardDTO boardDTO, String imagePath) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardDTO", boardDTO);
+        params.put("imagePath", imagePath);
+        return sql.insert("Board.save", params); // 게시글 저장 쿼리 실행
     }
 
     public List<BoardDTO> findAll() {
@@ -54,4 +58,7 @@ public class BoardRepository {
         return sql.selectList("Board.getDatesByMonth", params);
     }
 
+    public int saveImage(MultipartFile imageFile) {
+        return sql.insert("Board.saveImage", imageFile);
+    }
 }

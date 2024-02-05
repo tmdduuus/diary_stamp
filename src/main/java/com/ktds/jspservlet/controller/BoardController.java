@@ -4,19 +4,28 @@ import com.ktds.jspservlet.dto.*;
 import com.ktds.jspservlet.service.BoardService;
 import com.ktds.jspservlet.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Controller // 이 클래스는 Spring의 컨트롤러로 지정
 @RequiredArgsConstructor // 생성자 주입을 자동으로 생성
 @RequestMapping("/diary") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
 public class BoardController {
     private final BoardService boardService; // BoardService 의존성 주입
     private final CommentService commentService;
+
+//    @Value("${com.ktds.jspservlet.upload.path}")
+//    private String uploadPath;
 
     @GetMapping("/save") // HTTP GET 요청에 대한 처리를 위한 매핑
     public String saveForm() {
@@ -25,7 +34,18 @@ public class BoardController {
 
     @PostMapping("/save") // HTTP POST 요청에 대한 처리를 위한 매핑
     public String save(@ModelAttribute BoardDTO boardDTO) {
-        int saveResult = boardService.save(boardDTO); // 게시글 저장 요청 처리
+        MultipartFile file = boardDTO.getImageFile();
+        String fileName = file.getOriginalFilename();
+
+        try  {
+            file.transferTo(new File("C:\\Users\\KTDS\\Desktop\\jspservlet\\"));
+        } catch(Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+
+        String imagePath = boardService.storeFile(boardDTO.getImageFile());
+
+        int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
             return "redirect:/diary/paging"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
@@ -46,6 +66,7 @@ public class BoardController {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
+        System.out.println(boardDTO.getImage());
         model.addAttribute("page", page);
 
         List<CommentDTO> commentDTOList = commentService.findAll(id);

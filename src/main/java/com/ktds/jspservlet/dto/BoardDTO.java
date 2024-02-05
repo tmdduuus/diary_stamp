@@ -3,6 +3,7 @@ package com.ktds.jspservlet.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 
@@ -15,7 +16,17 @@ public class BoardDTO {
     private String boardPass;
     private String boardTitle;
     private String boardContents;
-    private String photo;
+    private MultipartFile image;
     private int boardHits;
     private Timestamp boardCreatedTime;
+
+    // TODO: getter 돌려놓기!
+    public String getImage() {
+        return image.getOriginalFilename();
+    }
+
+    public MultipartFile getImageFile() {
+        return image;
+    }
+
 }
