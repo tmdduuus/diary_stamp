@@ -47,6 +47,9 @@ dependencies {
 
 	// 개발용 의존성 추가 (Spring Boot 테스트 관련)
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation 'commons-io:commons-io:2.6'
 }
 
 tasks.named('test') {
