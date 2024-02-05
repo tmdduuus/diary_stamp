@@ -21,7 +21,7 @@
                 <td>
                     <a href="/diary?id=${board.id}">${board.boardTitle}</a>
                 </td>
-                <td>${board.photo}</td>
+                <td>${board.image}</td>
                 <td>${board.boardWriter}</td>
                 <td>${board.boardCreatedTime}</td>
                 <td>${board.boardHits}</td>

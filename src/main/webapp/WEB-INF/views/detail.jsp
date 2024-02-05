@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <th>photo</th>
-            <td>${board.photo}</td>
+            <td>${board.image}</td>
         </tr>
         <tr>
             <th>contents</th>
@@ -45,7 +45,6 @@
 <div id="comment-list">
     <table>
         <tr>
-            <th>댓글번호</th>
             <th>작성자</th>
             <th>내용</th>
             <th>작성시간</th>
@@ -91,13 +90,11 @@
                 console.log("작성성공");
                 console.log(commentList);
                 let output = "<table>";
-                output += "<tr><th>댓글번호</th>";
                 output += "<th>작성자</th>";
                 output += "<th>내용</th>";
                 output += "<th>작성시간</th></tr>";
                 for(let i in commentList){
                     output += "<tr>";
-                    output += "<td>"+commentList[i].id+"</td>";
                     output += "<td>"+commentList[i].commentWriter+"</td>";
                     output += "<td>"+commentList[i].commentContents+"</td>";
                     output += "<td>"+commentList[i].commentCreatedTime+"</td>";
