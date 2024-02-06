@@ -6,5 +6,6 @@
         <typeAlias type="com.ktds.jspservlet.dto.BoardDTO" alias="board"></typeAlias>
         <typeAlias type="com.ktds.jspservlet.dto.CommentDTO" alias="comment"></typeAlias>
         <typeAlias type="com.ktds.jspservlet.dto.DateDTO" alias="diaryDate"></typeAlias>
+        <typeAlias type="com.ktds.jspservlet.dto.UserDTO" alias="user"></typeAlias>
     </typeAliases>
 </configuration>

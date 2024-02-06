@@ -44,7 +44,6 @@ public class BoardController {
         }
     }
 
-    // Todo : 이미지 조회 기능 업데이트 & photo 데이터 안불러와짐
     @GetMapping("/")
     public String findAll(Model model) {
         List<BoardDTO> boardDTOList = boardService.findAll();
