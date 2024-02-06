@@ -10,4 +10,7 @@
     <select id="countByUsername" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM user_table WHERE userId = #{userId}
     </select>
+    <select id="findByUserId" resultType="user">
+        SELECT * FROM user_table WHERE userId = #{userId}
+    </select>
 </mapper>

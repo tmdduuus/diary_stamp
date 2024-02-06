@@ -26,10 +26,14 @@ public class UserService {
 
     public int checkId(String id) {
         int result = 0;
-
         result = userRepository.checkId(id);
         System.out.println(result);
         return result;
     }
 
+    public boolean validateUser(String userId, String userPassword) {
+        UserDTO user = userRepository.findByUserId(userId);
+        System.out.println(user);
+        return user != null && user.getUserPassword().equals(userPassword);
+    }
 }

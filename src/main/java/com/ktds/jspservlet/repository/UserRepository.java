@@ -21,4 +21,8 @@ public class UserRepository {
     public int checkId(String userId) {
         return sql.selectOne("User.countByUsername", userId);
     }
+
+    public UserDTO findByUserId(String userId) {
+        return sql.selectOne("User.findByUserId", userId);
+    }
 }
