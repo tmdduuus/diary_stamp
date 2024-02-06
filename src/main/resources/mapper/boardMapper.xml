@@ -5,7 +5,7 @@
 <mapper namespace="Board">
     <insert id="save" parameterType="java.util.HashMap">
         insert into board_table(boardWriter, boardPass, boardTitle, boardContents, photo)
-        values(#{boardWriter}, #{boardPass}, #{boardTitle}, #{boardContents}, #{imagePath})
+        values(#{boardDTO.boardWriter}, #{boardDTO.boardPass}, #{boardDTO.boardTitle}, #{boardDTO.boardContents}, #{imagePath})
     </insert>
     <select id="findAll" resultType="board">
         select * from board_table order by id desc

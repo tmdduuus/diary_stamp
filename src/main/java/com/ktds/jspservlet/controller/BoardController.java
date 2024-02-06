@@ -24,9 +24,7 @@ public class BoardController {
     private final BoardService boardService; // BoardService 의존성 주입
     private final CommentService commentService;
 
-//    @Value("${com.ktds.jspservlet.upload.path}")
-//    private String uploadPath;
-
+    // Todo : User 로그인 & 회원가입 기능 구현
     @GetMapping("/save") // HTTP GET 요청에 대한 처리를 위한 매핑
     public String saveForm() {
         return "save"; // "save" 뷰 이름을 반환하여 해당 JSP 파일을 표시
@@ -34,16 +32,9 @@ public class BoardController {
 
     @PostMapping("/save") // HTTP POST 요청에 대한 처리를 위한 매핑
     public String save(@ModelAttribute BoardDTO boardDTO) {
-        MultipartFile file = boardDTO.getImageFile();
-        String fileName = file.getOriginalFilename();
-
-        try  {
-            file.transferTo(new File("C:\\Users\\KTDS\\Desktop\\jspservlet\\"));
-        } catch(Exception e) {
-            System.out.println(e.getLocalizedMessage());
-        }
-
-        String imagePath = boardService.storeFile(boardDTO.getImageFile());
+        MultipartFile file = boardDTO.getImage();
+        String imagePath = boardService.storeFile(file);
+        boardDTO.setImagePath(imagePath);
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
@@ -53,6 +44,7 @@ public class BoardController {
         }
     }
 
+    // Todo : 이미지 조회 기능 업데이트 & photo 데이터 안불러와짐
     @GetMapping("/")
     public String findAll(Model model) {
         List<BoardDTO> boardDTOList = boardService.findAll();
@@ -65,9 +57,10 @@ public class BoardController {
                            @RequestParam(value="page", required = false, defaultValue = "1") int page){
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        String getImagePath = boardService.getImagePath(boardDTO.getPhoto());
         model.addAttribute("board", boardDTO);
-        System.out.println(boardDTO.getImage());
         model.addAttribute("page", page);
+        model.addAttribute("getImagePath", getImagePath);
 
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
@@ -95,6 +88,7 @@ public class BoardController {
         return "update";
     }
 
+    // TODO : endPageNum 확인
     @GetMapping("/paging")
     public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model){
         PageDTO pageDTO = new PageDTO();

@@ -17,16 +17,9 @@ public class BoardDTO {
     private String boardTitle;
     private String boardContents;
     private MultipartFile image;
+    private String imagePath;
+    private String photo;
     private int boardHits;
     private Timestamp boardCreatedTime;
-
-    // TODO: getter 돌려놓기!
-    public String getImage() {
-        return image.getOriginalFilename();
-    }
-
-    public MultipartFile getImageFile() {
-        return image;
-    }
 
 }
