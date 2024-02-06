@@ -16,9 +16,9 @@ public class BoardDTO {
     private String boardPass;
     private String boardTitle;
     private String boardContents;
-    private MultipartFile image;
-    private String imagePath;
-    private String photo;
+    private MultipartFile image; // 이미지 파일
+    private String imagePath; // 이미지 경로명
+    private String imageName; // 이미지 파일 이름(파일명)
     private int boardHits;
     private Timestamp boardCreatedTime;
 

@@ -4,7 +4,7 @@
 
 <mapper namespace="Board">
     <insert id="save" parameterType="java.util.HashMap">
-        insert into board_table(boardWriter, boardPass, boardTitle, boardContents, photo)
+        insert into board_table(boardWriter, boardPass, boardTitle, boardContents, imageName)
         values(#{boardDTO.boardWriter}, #{boardDTO.boardPass}, #{boardDTO.boardTitle}, #{boardDTO.boardContents}, #{imagePath})
     </insert>
     <select id="findAll" resultType="board">

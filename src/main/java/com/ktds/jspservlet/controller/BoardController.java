@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @PostMapping("/save") // HTTP POST 요청에 대한 처리를 위한 매핑
-    public String save(@ModelAttribute BoardDTO boardDTO) {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         MultipartFile file = boardDTO.getImage();
         String imagePath = boardService.storeFile(file);
         boardDTO.setImagePath(imagePath);
@@ -54,10 +54,10 @@ public class BoardController {
 
     @GetMapping
     public String findById(@RequestParam("id") Long id, Model model,
-                           @RequestParam(value="page", required = false, defaultValue = "1") int page){
+                           @RequestParam(value="page", required = false, defaultValue = "1") int page) throws IOException {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
-        String getImagePath = boardService.getImagePath(boardDTO.getPhoto());
+        String getImagePath = boardService.getImagePath(boardDTO.getImageName());
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", page);
         model.addAttribute("getImagePath", getImagePath);

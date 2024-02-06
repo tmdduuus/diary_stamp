@@ -25,7 +25,8 @@
         </tr>
         <tr>
             <th>photo</th>
-            <td>${board.image}</td>
+            <td>${board.imageName}</td>
+            <img src="data:image/jpeg;base64,${getImagePath}" alt="Image"/>
         </tr>
         <tr>
             <th>contents</th>
