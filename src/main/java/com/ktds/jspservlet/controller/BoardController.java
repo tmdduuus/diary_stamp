@@ -32,11 +32,16 @@ public class BoardController {
         return "save"; // "save" 뷰 이름을 반환하여 해당 JSP 파일을 표시
     }
 
-    // Todo : 파일 업로드 안할때 로직 ?
     @PostMapping("/save") // HTTP POST 요청에 대한 처리를 위한 매핑
     public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) throws IOException {
-        MultipartFile file = boardDTO.getImage();
-        String imagePath = boardService.storeFile(file);
+        String imagePath = "";
+        if(boardDTO.getImage().isEmpty()){
+            imagePath = "basic.png";
+        }else {
+            MultipartFile file = boardDTO.getImage();
+            imagePath = boardService.storeFile(file);
+        }
+
         boardDTO.setImagePath(imagePath);
 
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
@@ -83,16 +88,20 @@ public class BoardController {
         return "pagingAll";
     }
 
-    //TODO : 작성자 - 방문자 구별해서 수정,삭제 버튼 뜨도록?
+    //TODO : 1. 작성자 - 방문자 구별해서 수정,삭제 버튼 뜨도록?
     @GetMapping
     public String findById(@RequestParam("id") Long id, Model model,
-                           @RequestParam(value="page", required = false, defaultValue = "1") int page) throws IOException {
+                           @RequestParam(value="page", required = false, defaultValue = "1") int page,
+                           HttpSession httpSession) throws IOException {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         String getImagePath = boardService.getImagePath(boardDTO.getImageName());
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", page);
         model.addAttribute("getImagePath", getImagePath);
+
+        UserDTO loggedInUser = (UserDTO) httpSession.getAttribute("loggedInUser");
+        model.addAttribute("loggedInUserId", loggedInUser.getId());
 
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
@@ -117,7 +126,6 @@ public class BoardController {
         }
     }
 
-    // Todo : 사진 업데이트 수정
     @PostMapping("/update")
     public String update(@ModelAttribute BoardDTO boardDTO, Model model) throws IOException {
         MultipartFile file = boardDTO.getImage();
@@ -152,7 +160,7 @@ public class BoardController {
         }
     }
 
-    // TODO : endPageNum 확인
+    // TODO : 3. endPageNum 확인
     @GetMapping("/mylist")
     public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model,  HttpSession session){
         PageDTO pageDTO = new PageDTO();
