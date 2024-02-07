@@ -70,7 +70,7 @@
 <script>
     const listFn = () => {
         const page = '${page}';
-        location.href = "/diary/paging";
+        location.href = "/diary/mylist";
     }
     const updateFn = () => {
         const id = '${board.id}';
