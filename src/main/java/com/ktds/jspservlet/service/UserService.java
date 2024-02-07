@@ -31,9 +31,11 @@ public class UserService {
         return result;
     }
 
-    public boolean validateUser(String userId, String userPassword) {
+    public UserDTO validateUser(String userId, String userPassword) {
         UserDTO user = userRepository.findByUserId(userId);
-        System.out.println(user);
-        return user != null && user.getUserPassword().equals(userPassword);
+        if(user != null && user.getUserPassword().equals(userPassword)){
+            return user;
+        };
+        return null;
     }
 }

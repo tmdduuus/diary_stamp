@@ -2,6 +2,7 @@ package com.ktds.jspservlet.controller;
 
 import com.ktds.jspservlet.dto.UserDTO;
 import com.ktds.jspservlet.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,6 @@ public class UserController {
         String result="N";
 
         int flag = userService.checkId(id);
-
         if(flag == 1) result ="Y";
         //아이디가 있을시 Y 없을시 N jsp view 로 보냄
         return result;
@@ -48,13 +48,13 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam("userId") String userId,
                         @RequestParam("userPassword") String userPassword,
-                        RedirectAttributes redirectAttributes) {
-        boolean isValidUser = userService.validateUser(userId, userPassword);
+                        RedirectAttributes redirectAttributes, HttpSession session) {
+        UserDTO user = userService.validateUser(userId, userPassword);
 
-        if (isValidUser) {
+        if (user != null) {
+            session.setAttribute("loggedInUser", user);
             return "loginSuccess"; // 로그인 성공 시 이동할 페이지
         } else {
-//            model.addAttribute("loginError", "아이디 또는 비밀번호가 잘못되었습니다.");
             redirectAttributes.addFlashAttribute("loginError", true);
             return "redirect:/login";
         }
@@ -62,4 +62,23 @@ public class UserController {
 
     // TODO : 로그아웃 기능 구현 & 사용자 세션?
     // TODO : 마이페이지 기능 구현
+    @GetMapping("/mypage")
+    public String mypage(HttpSession session, Model model){
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            // 사용자 맞춤형 기능 실행
+            model.addAttribute("user", loggedInUser);
+            // 추가적인 사용자 맞춤형 정보 및 기능
+            return "mypage";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 현재 세션을 무효화
+        return "redirect:/";
+    }
+
 }
