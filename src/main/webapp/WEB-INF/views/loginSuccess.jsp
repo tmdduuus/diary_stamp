@@ -7,6 +7,7 @@
 <h2>hello spring framework</h2>
 <a href="/mypage">마이페이지</a>
 <a href="/diary/save">글작성</a>
-<a href="/diary/paging">글목록</a>
+<a href="/diary/mylist">내가 쓴 글목록</a>
+<a href="/diary/all">전체 글목록</a>
 </body>
 </html>

@@ -44,13 +44,23 @@ public class BoardRepository {
     }
 
     public int findAllCount(String userId){
-        return sql.selectOne("Board.findAllCount", userId);
+        return sql.selectOne("Board.findAllCountById", userId);
+    }
+
+    public int findAllCount(){
+        return sql.selectOne("Board.findAllCount");
     }
 
     public List<BoardDTO> getPagingBoard(int startPage, String userId) {
         Map<String, Object> params = new HashMap<>();
         params.put("startPage", startPage);
         params.put("userId", userId);
+        return sql.selectList("Board.getPagingBoardById", params);
+    }
+
+    public List<BoardDTO> getPagingBoard(int startPage) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startPage", startPage);
         return sql.selectList("Board.getPagingBoard", params);
     }
 

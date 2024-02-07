@@ -73,8 +73,16 @@ public class BoardService {
         return boardRepository.findAllCount(userId);
     }
 
+    public int findAllCount(){
+        return boardRepository.findAllCount();
+    }
+
     public List<BoardDTO> getPagingBoard(int page, String userId){
         return boardRepository.getPagingBoard(page, userId);
+    }
+
+    public List<BoardDTO> getPagingBoard(int page){
+        return boardRepository.getPagingBoard(page);
     }
 
     public List<DateDTO> getCalendarData(int year, int month) {

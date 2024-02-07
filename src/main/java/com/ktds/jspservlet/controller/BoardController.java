@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,13 +50,39 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/") // 지울 기능
-    public String findAll(Model model) {
-        List<BoardDTO> boardDTOList = boardService.findAll();
+    @GetMapping("/all")
+    public String findAll(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+//        List<BoardDTO> boardDTOList = boardService.findAll();
+//        model.addAttribute("boardList", boardDTOList);
+//        return "list";
+
+        PageDTO pageDTO = new PageDTO();
+
+        int countPageNum = boardService.findAllCount() / 10 + 1;//페이지 개수
+
+        int startPage = (page - 1) * 10;
+
+        if(countPageNum > 0){
+            pageDTO.setStartPage(1);//시작 페이지
+            pageDTO.setEndPage(countPageNum);
+        }else{
+            pageDTO.setStartPage(1);
+            pageDTO.setEndPage(1);
+        }
+
+        pageDTO.setPage(page);
+        pageDTO.setMaxPage(countPageNum);
+
+        List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage);
+
+//        System.out.println(boardDTOList);
+        model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
-        return "list";
+
+        return "pagingAll";
     }
 
+    //TODO : 작성자 - 방문자 구별해서 수정,삭제 버튼 뜨도록?
     @GetMapping
     public String findById(@RequestParam("id") Long id, Model model,
                            @RequestParam(value="page", required = false, defaultValue = "1") int page) throws IOException {
@@ -72,9 +99,20 @@ public class BoardController {
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam("id") Long id){
-        boardService.delete(id);
-        return "redirect:/diary/paging";
+    public String delete(@RequestParam("id") Long id, HttpSession httpSession,
+                         RedirectAttributes redirectAttributes){
+        UserDTO loggedInUser = (UserDTO) httpSession.getAttribute("loggedInUser");
+        String userId = loggedInUser.getUserId();
+
+        String boardWriter = boardService.findById(id).getBoardWriter();
+
+        if(userId.equals(boardWriter)){
+            redirectAttributes.addFlashAttribute("errorMessage", "권한이 없습니다.");
+            return "redirect:/diary?id=" + id;
+        }else{
+            boardService.delete(id);
+            return "redirect:/diary/paging";
+        }
     }
 
     // Todo : 사진 업데이트 수정
@@ -94,10 +132,15 @@ public class BoardController {
     }
 
     // TODO : endPageNum 확인
-    @GetMapping("/paging")
+    @GetMapping("/mylist")
     public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model,  HttpSession session){
         PageDTO pageDTO = new PageDTO();
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if(loggedInUser == null){
+            return "redirect:/"; // Todo : alert창 ( 로그인하시오 )
+        }
+
         String userId = loggedInUser.getUserId();
 
         int countPageNum = boardService.findAllCount(userId) / 10 + 1;//페이지 개수

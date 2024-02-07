@@ -2,6 +2,13 @@
 <html>
 <head>
     <title>index</title>
+    <script>
+        window.onload = function() {
+            <% if (Boolean.TRUE.equals(request.getAttribute("loginError"))) { %>
+            alert('로그인이 필요한 서비스입니다.');
+            <% } %>
+        };
+    </script>
 </head>
 <body>
     <h2>hello spring framework</h2>

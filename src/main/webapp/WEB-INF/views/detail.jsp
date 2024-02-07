@@ -4,6 +4,13 @@
 <head>
     <title>detail.jsp</title>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function() {
+            <% if (Boolean.TRUE.equals(request.getAttribute("errorMessage"))) { %>
+            alert('권한이 없습니다.');
+            <% } %>
+        };
+    </script>
 </head>
 <body>
     <table>
