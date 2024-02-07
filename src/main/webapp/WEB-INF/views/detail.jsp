@@ -43,9 +43,9 @@
     <button onclick="listFn()">목록</button>
     <button onclick="updateFn()">수정</button>
     <button onclick="deleteFn()">삭제</button>
-
 <div>
-    <input type="text" id="commentWriter" placeholder="작성자">
+    <input type="hidden" id="id" placeholder="id">
+    <input type="hidden" id="commentWriter" placeholder="작성자">
     <input type="text" id="commentContents" placeholder="내용">
     <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
 </div>
@@ -62,6 +62,9 @@
                 <td>${comment.commentWriter}</td>
                 <td>${comment.commentContents}</td>
                 <td>${comment.commentCreatedTime}</td>
+                <td>
+                    <button id="comment-delete-btn" onclick="deleteComment(${comment.id})">삭제</button>
+                </td>
             </tr>
         </c:forEach>
     </table>
@@ -117,6 +120,28 @@
                 console.log("실패");
             }
         });
+    }
+    function deleteComment(commentId) {
+        if (confirm('댓글을 삭제하시겠습니까?')) {
+            $.ajax({
+                type: "GET",
+                url: "/comment/delete",
+                data: { id: commentId },
+                success: function(response) {
+                    // 성공적으로 삭제되었을 때 댓글 목록 새로고침 또는 업데이트
+                    console.log("댓글 삭제 성공");
+                    // 페이지를 새로고침하거나, AJAX를 사용하여 댓글 목록만 업데이트할 수 있습니다.
+                    location.reload(); // 페이지 전체를 새로고침
+                },
+                error: function(xhr) {
+                    if(xhr.status === 403) {
+                        alert(xhr.responseJSON.msg); // 권한 없음 메시지 출력
+                    } else {
+                        console.log("댓글 삭제 실패");
+                    }
+                }
+            });
+        }
     }
 </script>
 </html>

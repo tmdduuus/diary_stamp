@@ -60,8 +60,6 @@ public class UserController {
         }
     }
 
-    // TODO : 로그아웃 기능 구현 & 사용자 세션?
-    // TODO : 마이페이지 기능 구현
     @GetMapping("/mypage")
     public String mypage(HttpSession session, Model model){
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");

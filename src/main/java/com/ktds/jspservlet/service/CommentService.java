@@ -19,4 +19,16 @@ public class CommentService {
     public List<CommentDTO> findAll(Long boardId){
         return commentRepository.findAll(boardId);
     }
+
+    public CommentDTO findByCommentId(Long commentId){
+        return commentRepository.findByCommentId(commentId);
+    }
+
+    public void delete(Long commentId) {
+        commentRepository.delete(commentId);
+    }
+
+    public List<CommentDTO> findByBoardId(Long boardId) {
+        return commentRepository.findByBoardId(boardId);
+    }
 }
