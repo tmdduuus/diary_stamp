@@ -26,10 +26,12 @@
     <select id="findAllCount" resultType="int">
         select count(*)
         from board_table
+        where boardWriter = #{userId}
     </select>
-    <select id="getPagingBoard" parameterType="int" resultType="board">
+    <select id="getPagingBoard" parameterType="java.util.HashMap" resultType="board">
         select *
         from board_table
+        where boardWriter = #{userId}
         limit #{startPage}, 10
     </select>
     <select id="getDatesByMonth" parameterType="java.util.HashMap" resultType="diaryDate">

@@ -43,12 +43,15 @@ public class BoardRepository {
         sql.update("Board.update", boardDTO);
     }
 
-    public int findAllCount(){
-        return sql.selectOne("Board.findAllCount");
+    public int findAllCount(String userId){
+        return sql.selectOne("Board.findAllCount", userId);
     }
 
-    public List<BoardDTO> getPagingBoard(int startPage) {
-        return sql.selectList("Board.getPagingBoard", startPage);
+    public List<BoardDTO> getPagingBoard(int startPage, String userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startPage", startPage);
+        params.put("userId", userId);
+        return sql.selectList("Board.getPagingBoard", params);
     }
 
     public List<DateDTO> findDatesByMonth(int year, int month) {

@@ -3,6 +3,7 @@ package com.ktds.jspservlet.controller;
 import com.ktds.jspservlet.dto.*;
 import com.ktds.jspservlet.service.BoardService;
 import com.ktds.jspservlet.service.CommentService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,17 +25,21 @@ public class BoardController {
     private final BoardService boardService; // BoardService 의존성 주입
     private final CommentService commentService;
 
-    // Todo : User 로그인 & 회원가입 기능 구현
     @GetMapping("/save") // HTTP GET 요청에 대한 처리를 위한 매핑
     public String saveForm() {
         return "save"; // "save" 뷰 이름을 반환하여 해당 JSP 파일을 표시
     }
 
+    // Todo : 파일 업로드 안할때 로직 ?
     @PostMapping("/save") // HTTP POST 요청에 대한 처리를 위한 매핑
-    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) throws IOException {
         MultipartFile file = boardDTO.getImage();
         String imagePath = boardService.storeFile(file);
         boardDTO.setImagePath(imagePath);
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        boardDTO.setBoardWriter(loggedInUser.getUserId());
+        boardDTO.setBoardPass(loggedInUser.getUserPassword());
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
@@ -44,7 +49,7 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/") // 지울 기능
     public String findAll(Model model) {
         List<BoardDTO> boardDTOList = boardService.findAll();
         model.addAttribute("boardList", boardDTOList);
@@ -72,6 +77,7 @@ public class BoardController {
         return "redirect:/diary/paging";
     }
 
+    // Todo : 사진 업데이트 수정
     @PostMapping("/update")
     public String update(@ModelAttribute BoardDTO boardDTO, Model model){
         boardService.update(boardDTO);
@@ -89,10 +95,12 @@ public class BoardController {
 
     // TODO : endPageNum 확인
     @GetMapping("/paging")
-    public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model){
+    public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model,  HttpSession session){
         PageDTO pageDTO = new PageDTO();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        String userId = loggedInUser.getUserId();
 
-        int countPageNum = boardService.findAllCount() / 10 + 1;//페이지 개수
+        int countPageNum = boardService.findAllCount(userId) / 10 + 1;//페이지 개수
 
         int startPage = (page - 1) * 10;
 
@@ -107,8 +115,9 @@ public class BoardController {
         pageDTO.setPage(page);
         pageDTO.setMaxPage(countPageNum);
 
-        List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage);
+        List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage, userId);
 
+//        System.out.println(boardDTOList);
         model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
 

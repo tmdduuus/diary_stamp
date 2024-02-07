@@ -69,12 +69,12 @@ public class BoardService {
         boardRepository.update(boardDTO);
     }
 
-    public int findAllCount(){
-        return boardRepository.findAllCount();
+    public int findAllCount(String userId){
+        return boardRepository.findAllCount(userId);
     }
 
-    public List<BoardDTO> getPagingBoard(int page){
-        return boardRepository.getPagingBoard(page);
+    public List<BoardDTO> getPagingBoard(int page, String userId){
+        return boardRepository.getPagingBoard(page, userId);
     }
 
     public List<DateDTO> getCalendarData(int year, int month) {
