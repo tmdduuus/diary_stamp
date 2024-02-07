@@ -9,5 +9,6 @@
 <a href="/diary/save">글작성</a>
 <a href="/diary/mylist">내가 쓴 글목록</a>
 <a href="/diary/all">전체 글목록</a>
+<a href="/logout">로그아웃</a>
 </body>
 </html>
