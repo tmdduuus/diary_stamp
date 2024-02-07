@@ -65,8 +65,8 @@ public class BoardService {
         boardRepository.delete(id);
     }
 
-    public void update(BoardDTO boardDTO) {
-        boardRepository.update(boardDTO);
+    public void update(BoardDTO boardDTO, String imagePath) {
+        boardRepository.update(boardDTO, imagePath);
     }
 
     public int findAllCount(String userId){

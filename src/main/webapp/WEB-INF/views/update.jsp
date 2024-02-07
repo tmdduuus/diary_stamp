@@ -4,26 +4,32 @@
     <title>update.jsp</title>
 </head>
 <body>
-    <form action="/diary/update" method="post" name="updateForm">
+    <form action="/diary/update" method="post" enctype="multipart/form-data" name="updateForm">
         <input type="hidden" name="id" value="${board.id}" readonly>
         <input type="text" name="boardWriter" value="${board.boardWriter}" readonly>
         <input type="text" name="boardPass" id="boardPass" placeholder="비밀번호">
         <input type="text" name="boardTitle" value="${board.boardTitle}">
-        <input type="file" name="image" value="${board.image}" placeholder="사진">
+        <input type="file" name="image" placeholder="사진" value="${board.image}" Content-Type="multipart/form-data">
         <textarea name="boardContents" cols="30" rows="10">${board.boardContents}</textarea>
+        <input type="hidden" name="imagePath" value="${board.imagePath}" readonly>
+        <input type="hidden" name="imageName" value="${board.imageName}" readonly>
+        <input type="hidden" name="boardHits" value="${board.boardHits}" readonly>
+        <input type="hidden" name="boardCreatedTime" value="${board.boardCreatedTime}" readonly>
         <input type="button" value="수정" onclick="updateReqFn()">
     </form>
 </div>
 </body>
 <script>
     const updateReqFn = () => {
-        const passInput = document.getElementById("boardPass").value;
-        const passDB = '${board.boardPass}';
-        if (passInput == passDB) {
-            document.updateForm.submit();
-        } else {
-            alert("비밀번호가 일치하지 않습니다!!");
-        }
+        document.updateForm.submit();
+
+        <%--const passInput = document.getElementById("boardPass").value;--%>
+        <%--const passDB = '${board.boardPass}';--%>
+        <%--if (passInput == passDB) {--%>
+        <%--    document.updateForm.submit();--%>
+        <%--} else {--%>
+        <%--    alert("비밀번호가 일치하지 않습니다!!");--%>
+        <%--}--%>
     }
 </script>
 </html>

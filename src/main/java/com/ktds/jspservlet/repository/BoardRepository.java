@@ -39,8 +39,12 @@ public class BoardRepository {
         sql.delete("Board.delete", id);
     }
 
-    public void update(BoardDTO boardDTO) {
-        sql.update("Board.update", boardDTO);
+    public void update(BoardDTO boardDTO, String imagePath) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardDTO", boardDTO);
+        params.put("imagePathStr", imagePath);
+
+        sql.update("Board.update", params);
     }
 
     public int findAllCount(String userId){

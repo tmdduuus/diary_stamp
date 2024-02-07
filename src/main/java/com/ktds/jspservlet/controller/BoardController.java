@@ -3,6 +3,7 @@ package com.ktds.jspservlet.controller;
 import com.ktds.jspservlet.dto.*;
 import com.ktds.jspservlet.service.BoardService;
 import com.ktds.jspservlet.service.CommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class BoardController {
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
-            return "redirect:/diary/paging"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            return "redirect:/diary/mylist"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "save"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }
@@ -100,35 +101,55 @@ public class BoardController {
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Long id, HttpSession httpSession,
-                         RedirectAttributes redirectAttributes){
+                         HttpServletRequest request){
         UserDTO loggedInUser = (UserDTO) httpSession.getAttribute("loggedInUser");
         String userId = loggedInUser.getUserId();
 
         String boardWriter = boardService.findById(id).getBoardWriter();
 
-        if(userId.equals(boardWriter)){
-            redirectAttributes.addFlashAttribute("errorMessage", "권한이 없습니다.");
-            return "redirect:/diary?id=" + id;
+        if(!userId.equals(boardWriter)){
+            request.setAttribute("msg", "권한이 없습니다.");
+            request.setAttribute("url", "/diary?id="+id);
+            return "alert";
         }else{
             boardService.delete(id);
-            return "redirect:/diary/paging";
+            return "redirect:/diary/mylist";
         }
     }
 
     // Todo : 사진 업데이트 수정
     @PostMapping("/update")
-    public String update(@ModelAttribute BoardDTO boardDTO, Model model){
-        boardService.update(boardDTO);
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model) throws IOException {
+        MultipartFile file = boardDTO.getImage();
+        String imagePath = boardService.storeFile(file);
+        boardDTO.setImagePath(imagePath);
+
+        boardService.update(boardDTO, imagePath);
         BoardDTO dto = boardService.findById(boardDTO.getId());
+
+        String getImagePath = boardService.getImagePath(dto.getImageName());
         model.addAttribute("board", dto);
+        model.addAttribute("getImagePath", getImagePath);
         return "detail";
     }
 
     @GetMapping("/update")
-    public String updateForm(@RequestParam("id") Long id, Model model){
-        BoardDTO boardDTO = boardService.findById(id);
-        model.addAttribute("board", boardDTO);
-        return "update";
+    public String updateForm(@RequestParam("id") Long id, Model model,
+                             HttpSession httpSession, HttpServletRequest request){
+        UserDTO loggedInUser = (UserDTO) httpSession.getAttribute("loggedInUser");
+        String userId = loggedInUser.getUserId();
+
+        String boardWriter = boardService.findById(id).getBoardWriter();
+
+        if(!userId.equals(boardWriter)){
+            request.setAttribute("msg", "권한이 없습니다.");
+            request.setAttribute("url", "/diary?id="+id);
+            return "alert";
+        }else{
+            BoardDTO boardDTO = boardService.findById(id);
+            model.addAttribute("board", boardDTO);
+            return "update";
+        }
     }
 
     // TODO : endPageNum 확인
