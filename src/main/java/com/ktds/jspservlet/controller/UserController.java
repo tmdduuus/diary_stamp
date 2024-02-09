@@ -16,14 +16,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
     private final UserService userService;
 
+    // TODO : signup, signin 탭 구분 jsp 수정
+
     @GetMapping("/join")
     public String join() { return "join"; }
 
     @PostMapping("/join")
-    public String join(@ModelAttribute UserDTO userDTO){
+    public String join(@ModelAttribute UserDTO userDTO,RedirectAttributes redirectAttributes){
         int joinResult = userService.join(userDTO);
         if (joinResult > 0) {
-            return "redirect:/"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            redirectAttributes.addFlashAttribute("signupSuccess", true);
+            return "redirect:/login"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "join"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }
