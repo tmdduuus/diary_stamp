@@ -204,4 +204,9 @@ public class BoardController {
         return "calendar";
     }
 
+    @GetMapping("/calendar")
+    public String calendar() {
+        return "calendar"; // JSP 파일의 이름 (calendar.jsp)
+    }
+
 }
