@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +16,8 @@
             justify-content: center;
             align-items: center;
             font-weight: 700;
-            font-size: 48px;
-            line-height: 78px;
+            font-size: 30px;
+            line-height: 50px;
         }
 
         .sec_cal .cal_nav .year-month {
@@ -36,7 +36,7 @@
         .sec_cal .cal_nav .go-next {
             display: block;
             width: 50px;
-            height: 78px;
+            height: 5px;
             font-size: 0;
             display: flex;
             justify-content: center;
@@ -47,10 +47,10 @@
         .sec_cal .cal_nav .go-next::before {
             content: "";
             display: block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #000;
-            border-width: 3px 3px 0 0;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #000;
+            border-width: 2px 2px 0 0;
             transition: border 0.1s;
         }
 
@@ -78,6 +78,8 @@
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
+            height: 5px;
+            font-size: 14px;
         }
 
         .sec_cal .cal_wrap::after {
