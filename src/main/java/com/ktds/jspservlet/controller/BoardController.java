@@ -108,6 +108,46 @@ public class BoardController {
         return "detail";
     }
 
+    // TODO : 3. endPageNum 확인 글목록 리스트 이미지 뜨도록 수정(주석)
+    @GetMapping("/mylist")
+    public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model,  HttpSession session) throws IOException {
+        PageDTO pageDTO = new PageDTO();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if(loggedInUser == null){
+            return "redirect:/"; // Todo : alert창 ( 로그인하시오 )
+        }
+
+        String userId = loggedInUser.getUserId();
+
+        int countPageNum = boardService.findAllCount(userId) / 10 + 1;//페이지 개수
+
+        int startPage = (page - 1) * 10;
+
+        if(countPageNum > 0){
+            pageDTO.setStartPage(1);//시작 페이지
+            pageDTO.setEndPage(countPageNum);
+        }else{
+            pageDTO.setStartPage(1);
+            pageDTO.setEndPage(1);
+        }
+
+        pageDTO.setPage(page);
+        pageDTO.setMaxPage(countPageNum);
+
+        List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage, userId);
+//        for (BoardDTO boardDTO:boardDTOList) {
+//            String getImagePath = boardService.getImagePath(boardDTO.getImageName());
+//            boardDTO.setImagePath(getImagePath);
+//        }
+//
+//        System.out.println(boardDTOList);
+        model.addAttribute("paging", pageDTO);
+        model.addAttribute("boardList", boardDTOList);
+
+        return "paging";
+    }
+
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Long id, HttpSession httpSession,
                          HttpServletRequest request){
@@ -158,42 +198,6 @@ public class BoardController {
             model.addAttribute("board", boardDTO);
             return "update";
         }
-    }
-
-    // TODO : 3. endPageNum 확인
-    @GetMapping("/mylist")
-    public String paging(@RequestParam(value = "page", defaultValue = "1") int page, Model model,  HttpSession session){
-        PageDTO pageDTO = new PageDTO();
-        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
-
-        if(loggedInUser == null){
-            return "redirect:/"; // Todo : alert창 ( 로그인하시오 )
-        }
-
-        String userId = loggedInUser.getUserId();
-
-        int countPageNum = boardService.findAllCount(userId) / 10 + 1;//페이지 개수
-
-        int startPage = (page - 1) * 10;
-
-        if(countPageNum > 0){
-            pageDTO.setStartPage(1);//시작 페이지
-            pageDTO.setEndPage(countPageNum);
-        }else{
-            pageDTO.setStartPage(1);
-            pageDTO.setEndPage(1);
-        }
-
-        pageDTO.setPage(page);
-        pageDTO.setMaxPage(countPageNum);
-
-        List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage, userId);
-
-//        System.out.println(boardDTOList);
-        model.addAttribute("paging", pageDTO);
-        model.addAttribute("boardList", boardDTOList);
-
-        return "paging";
     }
 
     @GetMapping("/date")
