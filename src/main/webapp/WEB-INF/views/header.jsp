@@ -48,7 +48,7 @@
 
     .blog-title {
       font-size: 50px;
-      color: #800020; /* 버건디 색상 코드 */
+      color: #f1575b; /* 버건디 색상 코드 */
       font-weight: bold; /* 텍스트를 굵게 */
       margin-left: 30px;
     }
@@ -98,7 +98,7 @@
 
     .menu li a:hover,
     .menu li a.active {
-      background-color: #800020; /* 버건디 색상 */
+      background-color: #f1575b; /* 버건디 색상 */
       color: white;
     }
 
@@ -144,7 +144,7 @@
         <img src="logo.png" alt="Logo" class="logo-image">
       </div>
       <ul class="nav-menu">
-        <li><a href="/blog">BLOG</a></li>
+        <li><a href="/">BLOG</a></li>
 <%--        <li><a href="/user">USER NAME</a></li>--%>
 <%--        <li><a href="/contact">CONTACT</a></li>--%>
       </ul>
