@@ -57,7 +57,7 @@ public class BoardController {
     }
 
     @GetMapping("/all")
-    public String findAll(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String findAll(@RequestParam(value = "page", defaultValue = "1") int page, Model model) throws IOException {
 //        List<BoardDTO> boardDTOList = boardService.findAll();
 //        model.addAttribute("boardList", boardDTOList);
 //        return "list";
@@ -80,8 +80,12 @@ public class BoardController {
         pageDTO.setMaxPage(countPageNum);
 
         List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage);
+        for(BoardDTO boardDTO : boardDTOList){
+            String getImagePath = boardService.getImagePath(boardDTO.getImageName());
+            boardDTO.setImagePath(getImagePath);
+        }
 
-//        System.out.println(boardDTOList);
+        System.out.println(boardDTOList);
         model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
 
@@ -136,11 +140,11 @@ public class BoardController {
         pageDTO.setMaxPage(countPageNum);
 
         List<BoardDTO> boardDTOList = boardService.getPagingBoard(startPage, userId);
-//        for (BoardDTO boardDTO:boardDTOList) {
-//            String getImagePath = boardService.getImagePath(boardDTO.getImageName());
-//            boardDTO.setImagePath(getImagePath);
-//        }
-//
+        for (BoardDTO boardDTO:boardDTOList) {
+            String getImagePath = boardService.getImagePath(boardDTO.getImageName());
+            boardDTO.setImagePath(getImagePath);
+        }
+
 //        System.out.println(boardDTOList);
         model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
@@ -207,6 +211,7 @@ public class BoardController {
         model.addAttribute("calendarData", calendarData);
         return "calendar";
     }
+
 
     @GetMapping("/calendar")
     public String calendar() {

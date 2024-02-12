@@ -20,6 +20,7 @@
                     <a href="/diary?id=${board.id}&page=${paging.page}">${board.boardTitle}</a>
                 </td>
                 <td>${board.image}</td>
+                <img src="data:image/jpeg;base64,${board.imagePath}" alt="Image"/>
                 <td>${board.boardWriter}</td>
                 <td>${board.boardCreatedTime}</td>
                 <td>${board.boardHits}</td>

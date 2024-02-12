@@ -26,7 +26,7 @@ public class BoardService {
     private final BoardRepository boardRepository; // BoardRepository 의존성 주입
 
     // 이미지 저장 경로
-    private static String UPLOAD_DIR = "src/main/resources/static/";
+    private static String UPLOAD_DIR = "src/main/resources/static/images/";
 
     public int save(BoardDTO boardDTO, String imagePath) {
         return boardRepository.save(boardDTO, imagePath); // 게시글 저장 요청을 BoardRepository에 위임
@@ -90,7 +90,7 @@ public class BoardService {
     }
 
     public String getImagePath(String image) throws IOException {
-        Path imagePath = Paths.get("C:\\Users\\KTDS\\Desktop\\jspservlet\\jspservlet\\src\\main\\resources\\static", image);
+        Path imagePath = Paths.get("C:\\Users\\KTDS\\Desktop\\jspservlet\\jspservlet\\src\\main\\resources\\static\\images", image);
         byte[] imageBytes = Files.readAllBytes(imagePath);
         String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
         return encodedImage;

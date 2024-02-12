@@ -9,7 +9,7 @@
     <table>
         <tr>
             <th>title</th>
-            <th>photo</th>
+<%--            <th>photo</th>--%>
             <th>writer</th>
             <th>date</th>
             <th>hits</th>
@@ -19,7 +19,8 @@
                 <td>
                     <a href="/diary?id=${board.id}&page=${paging.page}">${board.boardTitle}</a>
                 </td>
-                <td>${board.image}</td>
+<%--                <td>${board.imagePath}</td>--%>
+                <img src="data:image/jpeg;base64,${board.imagePath}" alt="Image"/>
                 <td>${board.boardWriter}</td>
                 <td>${board.boardCreatedTime}</td>
                 <td>${board.boardHits}</td>
