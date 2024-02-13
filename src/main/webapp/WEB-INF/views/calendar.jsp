@@ -56,7 +56,7 @@
 
         .sec_cal .cal_nav .go-prev:hover::before,
         .sec_cal .cal_nav .go-next:hover::before {
-            border-color: #ed2a61;
+            border-color: #f1575b;
         }
 
         .sec_cal .cal_nav .go-prev::before {
@@ -92,13 +92,13 @@
             justify-content: center;
             width: calc(100% / 7);
             text-align: left;
-            color: #999;
+            color: #000;
             font-size: 12px;
             text-align: center;
             border-radius:5px
         }
 
-        .current.today {background: rgb(242 242 242);}
+        /*.current.today {background: rgb(242 242 242);}*/
 
         .sec_cal .cal_wrap .dates {
             display: flex;
@@ -111,11 +111,32 @@
         }
 
         .sec_cal .cal_wrap .day:nth-child(7n) {
-            color: #ed2a61;
+            color: #f1575b;
         }
 
         .sec_cal .cal_wrap .day.disable {
             color: #ddd;
+        }
+
+        .diary-exists {
+            position: relative; /* 가상 요소의 위치 기준점 */
+            background: none; /* 배경 이미지 제거 */
+            /* 기타 스타일 */
+        }
+
+        .diary-exists::after {
+            content: ''; /* 가상 요소에 내용이 없음을 명시 */
+            position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('stamp.png'); /* 배경 이미지 설정 */
+            background-size: 80%; /* 이미지 크기 조정 */
+            background-position: center; /* 이미지 위치 조정 */
+            background-repeat: no-repeat; /* 이미지 반복 없음 */
+            filter: invert(53%) sepia(64%) saturate(4392%) hue-rotate(325deg) brightness(95%) contrast(99%);
+            z-index: -1; /* 이미지를 텍스트 뒤로 보내기 */
         }
     </style>
 </head>
@@ -173,6 +194,7 @@
 
         // 캘린더 렌더링
         renderCalender(thisMonth);
+        var nextDate;
 
         function renderCalender(thisMonth) {
 
@@ -188,7 +210,7 @@
 
             // 이번 달의 마지막날 날짜와 요일 구하기
             var endDay = new Date(currentYear, currentMonth + 1, 0);
-            var nextDate = endDay.getDate();
+            nextDate = endDay.getDate();
             var nextDay = endDay.getDay();
 
             console.log(prevDate, prevDay, nextDate, nextDay);
@@ -206,7 +228,9 @@
             }
             // 이번달
             for (var i = 1; i <= nextDate; i++) {
-                calendar.innerHTML = calendar.innerHTML + '<div class="day current">' + i + '</div>'
+                var dateDataAttribute = ' data-date="' + i + '"';
+                var additionalClass = (today.getFullYear() === currentYear && today.getMonth() === currentMonth && i === currentDate) ? ' today' : '';
+                calendar.innerHTML += '<div class="day current' + additionalClass + '"' + dateDataAttribute + '>' + i + '</div>';
             }
             // 다음달
             for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
@@ -219,6 +243,45 @@
                 var currentMonthDate = document.querySelectorAll('.dates .current');
                 currentMonthDate[todayDate -1].classList.add('today');
             }
+
+            getDiaryDates(thisMonth, prevDate);
+        }
+
+        // 일기 데이터 가져오기
+        function getDiaryDates(thisMonth, prevDay) {
+            var year = thisMonth.getFullYear();
+            var month = thisMonth.getMonth() + 1; // JavaScript의 월은 0부터 시작하므로 1을 더해줍니다.
+            console.log(year + " , " + month);
+
+            $.ajax({
+                url: '/diary/date?year=' + year + '&month=' + month, // API 엔드포인트 경로
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    $('.dates .current').removeClass('diary-exists');
+                    markDiaryDates(data, thisMonth, prevDay);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log("일기 데이터를 가져오는데 실패했습니다. 상태: " + textStatus + ", 오류: " + errorThrown);
+                }
+            });
+        }
+
+        // 일기가 있는 날짜 표시
+        function markDiaryDates(dates, thisMonth, prevDay) {
+            // 이번 달의 모든 날짜에 대해 일기 존재 여부 표시
+            dates.forEach(function(dateObj) {
+                var diaryDate = new Date(dateObj.diaryDate);
+                var dateClass = 'diary-exists';
+                // 현재 달력 월과 일기 데이터의 월이 같은 경우에만 처리
+                if(diaryDate.getFullYear() == currentYear && diaryDate.getMonth() == currentMonth) {
+                    var dayElement = document.querySelector('.dates .current[data-date="' + diaryDate.getDate() + '"]');
+                    if(dayElement && dateObj.diaryExists) {
+                        dayElement.classList.add(dateClass);
+                    }
+                }
+            });
         }
 
         // 이전달로 이동
