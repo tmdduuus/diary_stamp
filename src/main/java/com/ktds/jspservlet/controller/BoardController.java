@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@RestController
+//@RestController
 @Controller // 이 클래스는 Spring의 컨트롤러로 지정
 @RequiredArgsConstructor // 생성자 주입을 자동으로 생성
 @RequestMapping("/diary") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
@@ -51,7 +51,7 @@ public class BoardController {
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
-            return "redirect:/diary/mylist"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            return "pagingAll"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "save"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }
@@ -120,7 +120,7 @@ public class BoardController {
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
 
         if(loggedInUser == null){
-            return "redirect:/"; // Todo : alert창 ( 로그인하시오 )
+            return "redirect:/login"; // Todo : alert창 ( 로그인하시오 )
         }
 
         String userId = loggedInUser.getUserId();
@@ -150,7 +150,7 @@ public class BoardController {
         model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
 
-        return "paging";
+        return "/paging";
     }
 
     @GetMapping("/delete")
@@ -205,12 +205,6 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/date")
-    public List<DateDTO> getCalendarData(@RequestParam int year, @RequestParam int month) {
-        List<DateDTO> calendarData = boardService.getCalendarData(year, month);
-        System.out.println(calendarData);
-        return calendarData;
-    }
 
     @GetMapping("/calendar")
     public String calendar() {
