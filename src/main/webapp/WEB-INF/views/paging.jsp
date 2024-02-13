@@ -18,7 +18,7 @@
             padding: 20px;
             margin-left: 140px;
             margin-right: 230px;
-            margin-top: 330px;
+            /*margin-top: 330px;*/
         }
 
         .card {

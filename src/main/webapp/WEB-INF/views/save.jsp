@@ -72,7 +72,7 @@
         }
 
         .bottom-group{
-            margin-top: 330px;
+            /*margin-top: 330px;*/
             display: flex; /* Flexbox 사용 */
             align-items: center; /* 세로 중앙 정렬 */
             margin-bottom: 15px; /* 아래쪽 여백 추가 */

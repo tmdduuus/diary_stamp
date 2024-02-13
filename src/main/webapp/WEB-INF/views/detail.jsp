@@ -2,73 +2,102 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>detail.jsp</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <script>
-        window.onload = function() {
-            <% if (Boolean.TRUE.equals(request.getAttribute("errorMessage"))) { %>
-            alert('권한이 없습니다.');
-            <% } %>
-        };
-    </script>
+    <title>Blog Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-9a6us0uaC5V1cZEJz1HkdCOPUnJpV7ckg8gH9pHl0iG5R0P8mpaYwV4jNt9HtpY" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            /*background: #f5f5f5;*/
+            margin: 0;
+            padding: 0;
+        }
+
+        .blog-details{
+            /*margin-top: 370px;*/
+            margin-left: 150px;
+            margin-right: 230px;
+        }
+
+        .blog-image {
+            width: 90%;
+            height: auto;
+            display: block;
+        }
+
+        .blog-content {
+            background: #fff;
+            padding: 2px;
+            /*margin: 10px;*/
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .blog-info {
+            font-size: 14px;
+            color: #000000;
+            margin-bottom: 35px;
+            margin-left: 30px;
+        }
+
+        .blog-text {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #444;
+            margin-left: 40px;
+            margin-bottom: 30px;
+        }
+
+        .action-buttons {
+            text-align: right;
+            margin-top: 20px;
+            margin-right: 30px;
+            margin-bottom: 50px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f1575b;
+            color: white;
+            cursor: pointer;
+        }
+
+        img{
+            margin-bottom: 30px;
+            margin-left: 30px;
+            margin-right: 50px;
+        }
+    </style>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>writer</th>
-            <td>${board.boardWriter}</td>
-        </tr>
-        <tr>
-            <th>date</th>
-            <td>${board.boardCreatedTime}</td>
-        </tr>
-        <tr>
-            <th>hits</th>
-            <td>${board.boardHits}</td>
-        </tr>
-        <tr>
-            <th>title</th>
-            <td>${board.boardTitle}</td>
-        </tr>
-        <tr>
-            <th>photo</th>
-            <td>${board.imageName}</td>
-            <img src="data:image/jpeg;base64,${getImagePath}" alt="Image"/>
-        </tr>
-        <tr>
-            <th>contents</th>
-            <td>${board.boardContents}</td>
-        </tr>
-    </table>
-    <button onclick="listFn()">목록</button>
-    <button onclick="updateFn()">수정</button>
-    <button onclick="deleteFn()">삭제</button>
-<div>
-    <input type="hidden" id="id" placeholder="id">
-    <input type="hidden" id="commentWriter" placeholder="작성자">
-    <input type="text" id="commentContents" placeholder="내용">
-    <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+<jsp:include page="/WEB-INF/views/header.jsp" flush="false"/>
+<div class="blog-details">
+    <div class="blog-content">
+        <h1 class="blog-title">${board.boardTitle}</h1>
+        <div class="blog-info">
+            <span>Written by ${board.boardWriter}</span> |
+            <span>${board.boardCreatedTime}</span> |
+            <span>Views: ${board.boardHits}</span>
+        </div>
+        <img src="data:image/jpeg;base64,${getImagePath}" alt="Blog Image" class="blog-image"/>
+        <div class="blog-text">${board.boardContents}</div>
+    </div>
+    <div class="action-buttons">
+        <button onclick="listFn()">List</button>
+        <button onclick="updateFn()">Edit</button>
+        <button onclick="deleteFn()">Delete</button>
+    </div>
+    <!-- Comments section will go here -->
 </div>
-
-<div id="comment-list">
-    <table>
-        <tr>
-            <th>작성자</th>
-            <th>내용</th>
-            <th>작성시간</th>
-        </tr>
-        <c:forEach items="${commentList}" var="comment">
-            <tr>
-                <td>${comment.commentWriter}</td>
-                <td>${comment.commentContents}</td>
-                <td>${comment.commentCreatedTime}</td>
-                <td>
-                    <button id="comment-delete-btn" onclick="deleteComment(${comment.id})">삭제</button>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</div>
+<!-- Include your JavaScript and comment functionality -->
 </body>
 <script>
     const listFn = () => {
