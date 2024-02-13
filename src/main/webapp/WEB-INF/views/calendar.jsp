@@ -24,6 +24,7 @@
             width: 300px;
             text-align: center;
             line-height: 1;
+            font-size: 20px;
         }
 
         .sec_cal .cal_nav .nav {
