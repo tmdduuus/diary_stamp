@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<jsp:include page="/WEB-INF/views/header.jsp" flush="false"/>
 <html>
 <head>
     <title>Save Post</title>
@@ -88,7 +89,6 @@
     </style>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp" flush="false"/>
 <div class="save-form-content">
 <form action="/diary/save" method="post" enctype="multipart/form-data">
     <div class="input-group bottom-group">
