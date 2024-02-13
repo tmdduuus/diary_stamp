@@ -20,7 +20,6 @@
       padding: 20px 0;
       position: fixed;
       /*top: 90px;*/
-      width: 100%;
       z-index: 1000;
     }
 
