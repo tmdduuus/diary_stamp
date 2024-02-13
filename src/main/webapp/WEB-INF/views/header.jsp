@@ -18,7 +18,7 @@
       width: 100%;
       /*background-color: #f5f5f5; !* 변경하고 싶은 헤더 배경 색상 *!*/
       padding: 20px 0;
-      position: fixed;
+      /*position: fixed;*/
       /*top: 90px;*/
       z-index: 1000;
     }
@@ -132,7 +132,6 @@
         display: flex;
         align-items: center;
     }
-    /* 캘린더 CSS는 calendar.jsp 내부에서 관리하는 것이 좋습니다. */
   </style>
     <script>
         function confirmLogout() {
@@ -182,10 +181,5 @@
       <li><a href="/logout" onclick="return confirmLogout();">logout</a></li>
     </ul>
   </div>
-
-<%--<div id="content" style="padding-top: 100px;"> <!-- 헤더 높이에 맞춰 조정 -->--%>
-<div class="container content">
-  <!-- 본문 내용 -->
-</div>
 </body>
 </html>
