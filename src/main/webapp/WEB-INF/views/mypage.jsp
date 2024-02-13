@@ -48,7 +48,7 @@
         }
 
         .main-content {
-            margin-top: 530px; /* header 높이 + 추가 여백 */
+            margin-top: 400px; /* header 높이 + 추가 여백 */
         }
     </style>
 </head>
