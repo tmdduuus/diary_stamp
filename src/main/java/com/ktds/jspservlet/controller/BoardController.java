@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
+@RestController
 @Controller // 이 클래스는 Spring의 컨트롤러로 지정
 @RequiredArgsConstructor // 생성자 주입을 자동으로 생성
 @RequestMapping("/diary") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
@@ -205,13 +206,11 @@ public class BoardController {
     }
 
     @GetMapping("/date")
-    public String getCalendarData(Model model, @RequestParam int year, @RequestParam int month) {
+    public List<DateDTO> getCalendarData(@RequestParam int year, @RequestParam int month) {
         List<DateDTO> calendarData = boardService.getCalendarData(year, month);
         System.out.println(calendarData);
-        model.addAttribute("calendarData", calendarData);
-        return "calendar";
+        return calendarData;
     }
-
 
     @GetMapping("/calendar")
     public String calendar() {
