@@ -135,6 +135,18 @@
     }
     /* 캘린더 CSS는 calendar.jsp 내부에서 관리하는 것이 좋습니다. */
   </style>
+    <script>
+        function confirmLogout() {
+            // 사용자에게 로그아웃 의사를 확인
+            var logoutConfirm = confirm("정말 로그아웃 하시겠습니까?");
+            if (logoutConfirm) {
+                // 사용자가 '확인'을 클릭하면 로그아웃 처리
+                return true;
+            }
+            // 사용자가 '취소'를 클릭하면 로그아웃하지 않음
+            return false;
+        }
+    </script>
 </head>
 <body>
   <div class="header">
@@ -168,7 +180,7 @@
       <li><a href="/diary/all">all list</a></li>
       <li><a href="/diary/save">write</a></li>
       <li><a href="/mypage">mypage</a></li>
-      <li><a href="/logout">logout</a></li>
+      <li><a href="/logout" onclick="return confirmLogout();">logout</a></li>
     </ul>
   </div>
 

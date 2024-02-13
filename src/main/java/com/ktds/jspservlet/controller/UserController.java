@@ -79,7 +79,7 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 현재 세션을 무효화
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 }
