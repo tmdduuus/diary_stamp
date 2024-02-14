@@ -35,11 +35,13 @@
         select *
         from board_table
         where boardWriter = #{userId}
+        order by id desc
         limit #{startPage}, 10
     </select>
     <select id="getPagingBoard" parameterType="java.util.HashMap" resultType="board">
         select *
         from board_table
+        order by id desc
         limit #{startPage}, 10
     </select>
     <select id="getDatesByMonth" parameterType="java.util.HashMap" resultType="diaryDate">
