@@ -162,10 +162,10 @@
     <div class="container header-content">
       <div class="logo-container">
         <div>
-            <div class="blog-title">Blog Title</div>
-            <div class="blog-semi-title">Blog Semi Title</div>
+            <div class="blog-title">Diary STAMP</div>
+<%--            <div class="blog-semi-title">Blog Title</div>--%>
             <div class="blog-description">
-                <p>HAPPY 2024 DIARY</p>
+                <p>Let’s keep a record by writing a diary every day!</p>
             </div>
         </div>
       </div>
