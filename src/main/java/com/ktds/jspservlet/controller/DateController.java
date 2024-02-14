@@ -1,7 +1,9 @@
 package com.ktds.jspservlet.controller;
 
 import com.ktds.jspservlet.dto.DateDTO;
+import com.ktds.jspservlet.dto.UserDTO;
 import com.ktds.jspservlet.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,8 +23,13 @@ public class DateController {
     private final BoardService boardService; // BoardService 의존성 주입
 
     @GetMapping("/date")
-    public List<DateDTO> getCalendarData(@RequestParam int year, @RequestParam int month) {
-        List<DateDTO> calendarData = boardService.getCalendarData(year, month);
+    public List<DateDTO> getCalendarData(@RequestParam int year, @RequestParam int month,
+                                         HttpSession httpSession) {
+        UserDTO loggedInUser = (UserDTO) httpSession.getAttribute("loggedInUser");
+        String userId = loggedInUser.getUserId();
+
+        // 여기 부터
+        List<DateDTO> calendarData = boardService.getCalendarData(year, month, userId);
         System.out.println(calendarData);
         return calendarData;
     }

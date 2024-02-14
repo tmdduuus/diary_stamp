@@ -51,7 +51,7 @@ public class BoardController {
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
-            return "pagingAll"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            return "redirect:/pagingAll"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "save"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }

@@ -85,8 +85,8 @@ public class BoardService {
         return boardRepository.getPagingBoard(page);
     }
 
-    public List<DateDTO> getCalendarData(int year, int month) {
-        return boardRepository.findDatesByMonth(year, month);
+    public List<DateDTO> getCalendarData(int year, int month, String userId) {
+        return boardRepository.findDatesByMonth(year, month, userId);
     }
 
     public String getImagePath(String image) throws IOException {

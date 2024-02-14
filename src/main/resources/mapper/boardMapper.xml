@@ -47,7 +47,7 @@
     <select id="getDatesByMonth" parameterType="java.util.HashMap" resultType="diaryDate">
         SELECT DATE(boardCreatedTime) as diaryDate, COUNT(*) > 0 as diaryExists
         FROM board_table
-        WHERE YEAR(boardCreatedTime) = #{year} AND MONTH(boardCreatedTime) = #{month}
+        WHERE YEAR(boardCreatedTime) = #{year} AND MONTH(boardCreatedTime) = #{month} AND boardWriter = #{userId}
         GROUP BY DATE(boardCreatedTime)
         ORDER BY diaryDate
     </select>

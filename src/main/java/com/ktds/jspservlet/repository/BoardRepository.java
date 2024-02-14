@@ -68,10 +68,11 @@ public class BoardRepository {
         return sql.selectList("Board.getPagingBoard", params);
     }
 
-    public List<DateDTO> findDatesByMonth(int year, int month) {
-        Map<String, Integer> params = new HashMap<>();
+    public List<DateDTO> findDatesByMonth(int year, int month, String userId) {
+        Map<String, Object> params = new HashMap<>();
         params.put("year", year);
         params.put("month", month);
+        params.put("userId", userId);
         return sql.selectList("Board.getDatesByMonth", params);
     }
 
