@@ -101,8 +101,8 @@
                 <h2 class="article-title">${board.boardTitle}</h2>
                 <div class="article-info">
                     By ${board.boardWriter} on ${board.boardCreatedTime}
-                    <br>
-                    Hits: ${board.boardHits}
+<%--                    <br>--%>
+<%--                    Hits: ${board.boardHits}--%>
                 </div>
                 <a href="/diary?id=${board.id}&page=${paging.page}">Read More</a>
             </div>
