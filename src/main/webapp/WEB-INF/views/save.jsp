@@ -90,6 +90,16 @@
             flex-grow: 1; /* 나머지 공간을 모두 차지하도록 설정 */
             /* 입력 필드 스타일링은 유지 */
         }
+
+        .save-button {
+            padding: 10px 20px;
+            background-color: #f1575b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
