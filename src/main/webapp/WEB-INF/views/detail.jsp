@@ -198,6 +198,8 @@
         <div class="blog-text">${board.boardContents}</div>
 
         <div id="comment-list">
+            <div class="comment-author">comment</div>
+            <hr>
             <c:forEach items="${commentList}" var="comment">
                 <div class="comment-item">
                     <div class="comment-body">
@@ -262,6 +264,7 @@
                 console.log("작성성공");
                 console.log(commentList);
                 let output = "<div class='comment-list'>";
+                output += "<div class='comment-author'>comment</div> <hr>";
                 for(let i in commentList){
                     output += "<div class='comment-item'>";
                     output += "<div class='comment-body'>";
