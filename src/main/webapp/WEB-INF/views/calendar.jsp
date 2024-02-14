@@ -132,7 +132,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('stamp.png'); /* 배경 이미지 설정 */
+            background-image: url('/stamp.png'); /* 배경 이미지 설정 */
             background-size: 80%; /* 이미지 크기 조정 */
             background-position: center; /* 이미지 위치 조정 */
             background-repeat: no-repeat; /* 이미지 반복 없음 */

@@ -151,7 +151,7 @@
     <div class="ex">
       <div class="ex-container">
         <!-- 로고 이미지 추가 -->
-        <img src="logo.png" alt="Logo" class="logo-image">
+        <img src="/logo.png" alt="Logo" class="logo-image">
       </div>
       <ul class="nav-menu">
         <li><a href="/diary/all">BLOG</a></li>
