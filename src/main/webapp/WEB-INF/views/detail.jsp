@@ -30,12 +30,15 @@
             /*margin: 10px;*/
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
-        .blog-title {
-            font-size: 24px;
+        .blog-title-detail {
             color: #333;
             margin-bottom: 10px;
+            font-size: 50px;
+            font-weight: bold; /* 텍스트를 굵게 */
+            margin-left: 30px;
         }
 
         .blog-info {
@@ -55,7 +58,7 @@
 
         .action-buttons {
             text-align: right;
-            margin-top: 20px;
+            margin-top: 30px;
             margin-right: 30px;
             margin-bottom: 50px;
         }
@@ -75,13 +78,117 @@
             margin-left: 30px;
             margin-right: 50px;
         }
+
+        #comment-list {
+            /*max-width: 800px;*/
+            /*margin: auto;*/
+            margin-left: 40px;
+            margin-right: 50px;
+            padding: 20px;
+            border-radius: 10px;
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+        }
+
+        .comment-item {
+            background: #EFEFEF;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 10px; /* 댓글 사이의 여백 */
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .comment-body {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .comment-content {
+            margin-bottom: 10px;
+        }
+
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-date {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .comment-actions {
+            margin-left: auto;
+        }
+
+        .comment-actions button {
+            padding: 5px 10px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment-actions button:hover {
+            background-color: #ff6666;
+        }
+
+        #comment-form {
+            margin: 20px 0;
+            padding: 20px;
+            /*background-color: #fff;*/
+            /*border-radius: 8px;*/
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 40px;
+            margin-right: 50px;
+        }
+
+        .input-group .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .input-group .comment-submit-btn {
+            padding: 10px 20px;
+            background-color: #f1575b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group .comment-submit-btn:hover {
+            background-color: #ff6666;
+        }
+
+
     </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp" flush="false"/>
 <div class="blog-details">
     <div class="blog-content">
-        <h1 class="blog-title">${board.boardTitle}</h1>
+        <h1 class="blog-title-detail">${board.boardTitle}</h1>
         <div class="blog-info">
             <span>Written by ${board.boardWriter}</span> |
             <span>${board.boardCreatedTime}</span> |
@@ -89,13 +196,38 @@
         </div>
         <img src="data:image/jpeg;base64,${getImagePath}" alt="Blog Image" class="blog-image"/>
         <div class="blog-text">${board.boardContents}</div>
+
+        <div id="comment-list">
+            <c:forEach items="${commentList}" var="comment">
+                <div class="comment-item">
+                    <div class="comment-body">
+                        <div class="comment-author">${comment.commentWriter}</div>
+                        <div class="comment-content">${comment.commentContents}</div>
+                        <div class="comment-date">${comment.commentCreatedTime}</div>
+                    </div>
+                    <div class="comment-actions">
+                        <button onclick="deleteComment(${comment.id})">Delete</button>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+        <div id="comment-form">
+            <input type="hidden" id="id" placeholder="id">
+            <input type="hidden" id="commentWriter" placeholder="작성자">
+            <div class="input-group">
+                <input type="text" id="commentContents" placeholder="내용을 입력하세요" class="comment-input">
+                <button id="comment-write-btn" onclick="commentWrite()" class="comment-submit-btn">Comment</button>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="listFn()">List</button>
+            <button onclick="updateFn()">Edit</button>
+            <button onclick="deleteFn()">Delete</button>
+        </div>
     </div>
-    <div class="action-buttons">
-        <button onclick="listFn()">List</button>
-        <button onclick="updateFn()">Edit</button>
-        <button onclick="deleteFn()">Delete</button>
-    </div>
-    <!-- Comments section will go here -->
+</div>
+
 </div>
 <!-- Include your JavaScript and comment functionality -->
 </body>
@@ -129,18 +261,20 @@
             success: function(commentList) {
                 console.log("작성성공");
                 console.log(commentList);
-                let output = "<table>";
-                output += "<th>작성자</th>";
-                output += "<th>내용</th>";
-                output += "<th>작성시간</th></tr>";
+                let output = "<div class='comment-list'>";
                 for(let i in commentList){
-                    output += "<tr>";
-                    output += "<td>"+commentList[i].commentWriter+"</td>";
-                    output += "<td>"+commentList[i].commentContents+"</td>";
-                    output += "<td>"+commentList[i].commentCreatedTime+"</td>";
-                    output += "</tr>";
+                    output += "<div class='comment-item'>";
+                    output += "<div class='comment-body'>";
+                    output += "<div class='comment-author'>" + commentList[i].commentWriter + "</div>";
+                    output += "<div class='comment-content'>" + commentList[i].commentContents + "</div>";
+                    output += "<div class='comment-date'>" + commentList[i].commentCreatedTime + "</div>";
+                    output += "</div>"; // .comment-info
+                    output += "<div class='comment-actions'>";
+                    output += "<button onclick='deleteComment(" + commentList[i].id + ")'>Delete</button>";
+                    output += "</div>"; // .comment-delete
+                    output += "</div>";
                 }
-                output += "</table>";
+                output += "</div>"; // .comments
                 document.getElementById('comment-list').innerHTML = output;
                 document.getElementById('commentWriter').value='';
                 document.getElementById('commentContents').value='';
