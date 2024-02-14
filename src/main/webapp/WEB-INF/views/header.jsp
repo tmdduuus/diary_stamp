@@ -154,7 +154,7 @@
         <img src="logo.png" alt="Logo" class="logo-image">
       </div>
       <ul class="nav-menu">
-        <li><a href="/">BLOG</a></li>
+        <li><a href="/diary/all">BLOG</a></li>
 <%--        <li><a href="/user">USER NAME</a></li>--%>
 <%--        <li><a href="/contact">CONTACT</a></li>--%>
       </ul>
