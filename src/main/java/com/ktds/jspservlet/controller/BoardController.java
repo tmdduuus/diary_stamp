@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-//@RestController
 @Controller // 이 클래스는 Spring의 컨트롤러로 지정
 @RequiredArgsConstructor // 생성자 주입을 자동으로 생성
 @RequestMapping("/diary") // 이 컨트롤러에서 처리할 요청 URL의 기본 경로 설정
@@ -51,7 +50,7 @@ public class BoardController {
 
         int saveResult = boardService.save(boardDTO, imagePath); // 게시글 저장 요청 처리
         if (saveResult > 0) {
-            return "redirect:/pagingAll"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
+            return "redirect:/diary/all"; // 게시글 저장 성공 시 목록 페이지로 리다이렉트
         } else {
             return "save"; // 게시글 저장 실패 시 다시 "save" 페이지로 이동
         }
