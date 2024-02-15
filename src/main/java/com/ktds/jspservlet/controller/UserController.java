@@ -56,7 +56,7 @@ public class UserController {
 
         if (user != null) {
             session.setAttribute("loggedInUser", user);
-            return "mypage"; // 로그인 성공 시 이동할 페이지
+            return "redirect:/diary/all"; // 로그인 성공 시 이동할 페이지
         } else {
             redirectAttributes.addFlashAttribute("loginError", true);
             return "redirect:/login";
