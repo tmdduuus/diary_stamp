@@ -19,9 +19,8 @@
         }
 
         .blog-image {
-            width: 90%;
+            width: 500px;
             height: auto;
-            display: block;
         }
 
         .blog-content {
@@ -181,7 +180,12 @@
             background-color: #ff6666;
         }
 
-
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* 또는 원하는 높이 */
+        }
     </style>
 </head>
 <body>
@@ -194,7 +198,9 @@
             <span>${board.boardCreatedTime}</span> |
             <span>Views: ${board.boardHits}</span>
         </div>
-        <img src="data:image/jpeg;base64,${getImagePath}" alt="Blog Image" class="blog-image"/>
+        <div class="image-container">
+            <img src="data:image/jpeg;base64,${getImagePath}" alt="Blog Image" class="blog-image"/>
+        </div>
         <div class="blog-text">${board.boardContents}</div>
 
         <div id="comment-list">
@@ -212,6 +218,7 @@
                     </div>
                 </div>
             </c:forEach>
+
         </div>
         <div id="comment-form">
             <input type="hidden" id="id" placeholder="id">
