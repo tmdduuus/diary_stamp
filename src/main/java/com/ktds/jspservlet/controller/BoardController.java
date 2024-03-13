@@ -7,15 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,6 +36,7 @@ public class BoardController {
         }else {
             MultipartFile file = boardDTO.getImage();
             imagePath = boardService.storeFile(file);
+//            imagePath = GoogleCloudStorageService.uploadImage(file);
         }
 
         boardDTO.setImagePath(imagePath);
