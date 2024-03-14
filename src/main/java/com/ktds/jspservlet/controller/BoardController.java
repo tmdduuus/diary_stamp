@@ -82,7 +82,7 @@ public class BoardController {
             boardDTO.setImagePath(getImagePath);
         }
 
-        System.out.println(boardDTOList);
+//        System.out.println(boardDTOList);
         model.addAttribute("paging", pageDTO);
         model.addAttribute("boardList", boardDTOList);
 
