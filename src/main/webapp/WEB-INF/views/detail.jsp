@@ -211,7 +211,7 @@
                     <div class="comment-body">
                         <div class="comment-author">${comment.commentWriter}</div>
                         <div class="comment-content">${comment.commentContents}</div>
-                        <div class="comment-date">${comment.commentCreatedTime}</div>
+                        <div type="hidden" class="comment-date">${comment.commentCreatedTime}</div>
                     </div>
                     <div class="comment-actions">
                         <button onclick="deleteComment(${comment.id})">Delete</button>
